@@ -1,50 +1,53 @@
-# @capacitor/wechat-sdk
+# @fetaoily/capacitor-wechat-sdk
+
 ## 关于参数及使用配置
+
 ### 【参数配置】
-1、修改 capacitor.config.ts 或capacitor.config.json文件，增加微信相关配置参数
-```
+
+1、修改 capacitor.config.ts 增加微信相关配置参数
+
+```ts
 const config: CapacitorConfig = {
-  mchid: '123456', // 商户id，无需微信支付功能可忽略本参数
-  wechatAppId: 'wxd***c1fdsfsfs7f4f***', // 应用从微信开放平台官方网站申请到的合法appID
-  wechatUniversalLink: 'https://com.***.***/' // UniversalLink 仅针对于iOS
+    plugins: {
+        WechatSDK: {
+            mchid: '1234567890', // 商户id, 如无微信支付功能可忽略此参数
+            wechatAppId: 'wx1234567890123456', // 微信应用id: 从微信开放平台官方网站申请到的合法AppId
+            wechatUniversalLink: 'https://com.***.***/' // UniversalLink 仅针对于iOS
+        },
+    }
 };
 ```
 
 ### 【iOS配置】
+
 1、[参考微信官方配置UniversalLink并配置URL scheme和LSApplicationQueriesSchemes](https://developers.weixin.qq.com/doc/oplatform/Mobile_App/Access_Guide/iOS.html)  
-2、在你的工程文件中选择 Build Setting，在"Other Linker Flags"中加入"-ObjC -all_load"  
-3、修改app/appDelegate.swift，增加或修改下面回调处理：  
-```
+2、在你的工程文件中选择 Build Setting, 在"Other Linker Flags"中加入"-ObjC -all_load"  
+3、修改app/appDelegate.swift, 增加或修改下面回调处理:
+
+```swift
  func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {    
       return WechatSDKApplicationDelegate.sharedInstance.application(application,continue: userActivity, restorationHandler: restorationHandler)    
        // return ApplicationDelegateProxy.shared.application(application, continue: userActivity, restorationHandler: restorationHandler)    
 }
 ```   
 
-### 【Android配置】  
-1、安卓还需要修改[capacitor-wechat-sdk](https://github.com/chenqingze/capacitor-wechat-sdk)/[android](https://github.com/chenqingze/capacitor-wechat-sdk/tree/main/android)/build.gradle文件,如下图红色标记所示：     
-  
-  
-<img width="674" alt="image" src="https://user-images.githubusercontent.com/8285776/153450222-5326f98c-d225-45f2-b609-dcfaeecacd50.png">  
-  
-2、Android 11 适配 [参考微信官方文档](https://open.weixin.qq.com/cgi-bin/announce?action=getannouncement&key=11600155960jI9EY&version=&lang=&token=)    
+### 【Android配置】
 
-## 关于安装
-wechat sdk wrapper with capacitor ,support ios and android,本项目为自用项目并未发布到npm仓库，请clone到本地后，使用本地路径安装 : 
-```bash
-npm install /pathto/capacitor-wechat-sdk
-npx cap sync
+1、Android 11
+适配 [参考微信官方文档](https://open.weixin.qq.com/cgi-bin/announce?action=getannouncement&key=11600155960jI9EY&version=&lang=&token=)
 
-```
-***下面的安装方式为capacitor自动生成，不可用。
 ## Install
 
 ```bash
-npm install @capacitor/wechat-sdk 
+npm install @fetaoily/capacitor-wechat-sdk
 npx cap sync
 ```
 
 ## API
+
+```ts
+import {WechatSDK as Wechat} from "@fetaoily/capacitor-wechat-sdk";
+```
 
 <docgen-index>
 
@@ -66,166 +69,219 @@ npx cap sync
 
 ### echo(...)
 
-```typescript
-echo(options: { value: string; }) => Promise<any>
+```ts
+export interface WechatSDKPlugin {
+    echo(options: {
+        value: string;
+    }): Promise<any>;
+}
 ```
 
 测试
 
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
+| Param         | Type                 |
+|---------------|----------------------|
+| **`options`** | `{ value: string; }` |
 
-**Returns:** <code>Promise&lt;any&gt;</code>
+**Returns:** `Promise<any>`
 
 --------------------
 
-
 ### pay(...)
 
-```typescript
-pay(options: { prepayId: string; packageValue: string; nonceStr: string; timeStamp: string; sign: string; }) => Promise<any>
+```ts
+export interface WechatSDKPlugin {
+    pay(options: {
+        prepayId: string;
+        packageValue: string;
+        nonceStr: string;
+        timeStamp: string;
+        sign: string;
+    }): Promise<any>;
+}
 ```
 
 调起微信支付
 
-| Param         | Type                                                                                                        |
-| ------------- | ----------------------------------------------------------------------------------------------------------- |
-| **`options`** | <code>{ prepayId: string; packageValue: string; nonceStr: string; timeStamp: string; sign: string; }</code> |
+| Param         | Type                                                                                             |
+|---------------|--------------------------------------------------------------------------------------------------|
+| **`options`** | `{ prepayId: string; packageValue: string; nonceStr: string; timeStamp: string; sign: string; }` |
 
-**Returns:** <code>Promise&lt;any&gt;</code>
+**Returns:** `Promise<any>`
 
 --------------------
 
-
 ### isInstalled()
 
-```typescript
-isInstalled() => Promise<any>
+```ts
+export interface WechatSDKPlugin {
+    isInstalled(): Promise<any>;
+}
 ```
 
 判断是否安装微信
 
-**Returns:** <code>Promise&lt;any&gt;</code>
+**Returns:** `Promise<any>`
 
 --------------------
 
-
 ### shareText(...)
 
-```typescript
-shareText(options: { text: string; scene: string; }) => Promise<any>
+```ts
+export interface WechatSDKPlugin {
+    shareText(options: {
+        text: string;
+        scene: string;
+    }): Promise<any>;
+}
 ```
 
 分享文本
 
-| Param         | Type                                          |
-| ------------- | --------------------------------------------- |
-| **`options`** | <code>{ text: string; scene: string; }</code> |
+| Param         | Type                               |
+|---------------|------------------------------------|
+| **`options`** | `{ text: string; scene: string; }` |
 
-**Returns:** <code>Promise&lt;any&gt;</code>
+**Returns:** `Promise<any>`
 
 --------------------
 
-
 ### shareLink(...)
 
-```typescript
-shareLink(options: { url: string; title: string; description: string; thumb?: string; scene: number; }) => Promise<any>
+```ts
+export interface WechatSDKPlugin {
+    shareLink(options: {
+        url: string;
+        title: string;
+        description: string;
+        thumb?: string;
+        scene: number;
+    }): Promise<any>;
+}
 ```
 
 分享链接
 
-| Param         | Type                                                                                             | Description                                |
-| ------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------ |
-| **`options`** | <code>{ url: string; title: string; description: string; thumb?: string; scene: number; }</code> | thumb - 图片url地址 例如：http://xxx.com/test.png |
+| Param         | Type                                                                                  | Description                                |
+|---------------|---------------------------------------------------------------------------------------|--------------------------------------------|
+| **`options`** | `{ url: string; title: string; description: string; thumb?: string; scene: number; }` | thumb - 图片url地址 例如：http://xxx.com/test.png |
 
-**Returns:** <code>Promise&lt;any&gt;</code>
+**Returns:** `Promise<any>`
 
 --------------------
 
-
 ### shareImage(...)
 
-```typescript
-shareImage(options: { image: string; title: string; description: string; scene: number; }) => Promise<any>
+```ts
+export interface WechatSDKPlugin {
+    shareImage(options: {
+        image: string;
+        title: string;
+        description: string;
+        scene: number;
+    }): Promise<any>;
+}
 ```
 
 分享图片,可配合@capacitor/filesystem 使用
 
-| Param         | Type                                                                               | Description                                                                                                         |
-| ------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| **`options`** | <code>{ image: string; title: string; description: string; scene: number; }</code> |  image - 本地图片的名称，如有特殊需求请自行修改获取图片的位置或方式 ios默认去documentDirectory下寻找 android默认去 /XXX/yourAppPackageName/cache目录下寻找图片文件 |
+| Param         | Type                                                                    | Description                                                                                                        |
+|---------------|-------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| **`options`** | `{ image: string; title: string; description: string; scene: number; }` | image - 本地图片的名称，如有特殊需求请自行修改获取图片的位置或方式 ios默认去documentDirectory下寻找 android默认去 /XXX/yourAppPackageName/cache目录下寻找图片文件 |
 
-**Returns:** <code>Promise&lt;any&gt;</code>
+**Returns:** `Promise<any>`
 
 --------------------
 
-
 ### shareMiniProgram(...)
 
-```typescript
-shareMiniProgram(options: { webpageUrl: string; userName: string; path: string; hdImageData: string; withShareTicket: boolean; miniProgramType: number; title: string; description: string; scene: number; }) => Promise<any>
+```ts
+export interface WechatSDKPlugin {
+    shareMiniProgram(options: {
+        webpageUrl: string;
+        userName: string;
+        path: string;
+        hdImageData: string;
+        withShareTicket: boolean;
+        miniProgramType: number;
+        title: string;
+        description: string;
+        scene: number;
+    }): Promise<any>;
+}
 ```
 
 分享微信小程序
 
-| Param         | Type                                                                                                                                                                                            | Description                                       |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| **`options`** | <code>{ webpageUrl: string; userName: string; path: string; hdImageData: string; withShareTicket: boolean; miniProgramType: number; title: string; description: string; scene: number; }</code> |  hdImageData - 图片url地址 例如：http://xxx.com/test.png |
+| Param         | Type                                                                                                                                                                                 | Description                                      |
+|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------|
+| **`options`** | `{ webpageUrl: string; userName: string; path: string; hdImageData: string; withShareTicket: boolean; miniProgramType: number; title: string; description: string; scene: number; }` | hdImageData - 图片url地址 例如：http://xxx.com/test.png |
 
-**Returns:** <code>Promise&lt;any&gt;</code>
+**Returns:** `Promise<any>`
 
 --------------------
 
-
 ### launchMiniProgram(...)
 
-```typescript
-launchMiniProgram(options: { userName: string; path: string; miniProgramType: number; }) => Promise<any>
+```ts
+export interface WechatSDKPlugin {
+    launchMiniProgram(options: {
+        userName: string;
+        path: string;
+        miniProgramType: number;
+    }): Promise<any>;
+}
 ```
 
 调起微信小程序
 
-| Param         | Type                                                                      |
-| ------------- | ------------------------------------------------------------------------- |
-| **`options`** | <code>{ userName: string; path: string; miniProgramType: number; }</code> |
+| Param         | Type                                                           |
+|---------------|----------------------------------------------------------------|
+| **`options`** | `{ userName: string; path: string; miniProgramType: number; }` |
 
-**Returns:** <code>Promise&lt;any&gt;</code>
+**Returns:** `Promise<any>`
 
 --------------------
 
-
 ### sendAuthRequest(...)
 
-```typescript
-sendAuthRequest(options: { scope: string; state: string; }) => Promise<any>
+```ts
+export interface WechatSDKPlugin {
+    sendAuthRequest(options: {
+        scope: string;
+        state: string;
+    }): Promise<any>;
+}
 ```
 
 微信登录
 
-| Param         | Type                                           |
-| ------------- | ---------------------------------------------- |
-| **`options`** | <code>{ scope: string; state: string; }</code> |
+| Param         | Type                                |
+|---------------|-------------------------------------|
+| **`options`** | `{ scope: string; state: string; }` |
 
-**Returns:** <code>Promise&lt;any&gt;</code>
+**Returns:** `Promise<any>`
 
 --------------------
 
-
 ### wxOpenCustomerServiceChat(...)
 
-```typescript
-wxOpenCustomerServiceChat(options: { corpId: string; url: string; }) => Promise<any>
+```ts
+export interface WechatSDKPlugin {
+    wxOpenCustomerServiceChat(options: {
+        corpId: string;
+        url: string;
+    }): Promise<any>;
+}
 ```
 
 拉起微信客服
 
-| Param         | Type                                          | Description               |
-| ------------- | --------------------------------------------- | ------------------------- |
-| **`options`** | <code>{ corpId: string; url: string; }</code> | corpId - 企业ID url - 客服URL |
+| Param         | Type                               | Description               |
+|---------------|------------------------------------|---------------------------|
+| **`options`** | `{ corpId: string; url: string; }` | corpId - 企业ID url - 客服URL |
 
-**Returns:** <code>Promise&lt;any&gt;</code>
+**Returns:** `Promise<any>`
 
 --------------------
 
