@@ -13,6 +13,7 @@ import com.getcapacitor.Bridge;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
+import com.getcapacitor.PluginConfig;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import com.tencent.mm.opensdk.constants.Build;
@@ -32,11 +33,13 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 @CapacitorPlugin(name = "WechatSDK")
 public class WechatSDKPlugin extends Plugin {
 
-    private WechatSDK implementation = new WechatSDK();
+    private final WechatSDK implementation = new WechatSDK();
 
     public static Bridge bridge;
     public static IWXAPI wxApi;
     public static String callbackId;
+
+    private static PluginConfig pluginConfig;
 
     /**
      * 初始化操作
@@ -44,6 +47,7 @@ public class WechatSDKPlugin extends Plugin {
     @Override
     public void load() {
         super.load();
+        pluginConfig = getConfig();
         bridge = this.getBridge();
         registerWeChat();
     }
@@ -372,11 +376,11 @@ public class WechatSDKPlugin extends Plugin {
         if (wxApi.getWXAppSupportAPI() >= Build.SUPPORT_OPEN_CUSTOMER_SERVICE_CHAT) {
             WXOpenCustomerServiceChat.Req req = new WXOpenCustomerServiceChat.Req();
             req.corpId = call.getString("corpId");  // 企业ID
-            req.url = call.getString("url");	// 客服URL
+            req.url = call.getString("url");    // 客服URL
             if (!wxApi.sendReq(req)) {
                 call.reject(ERROR_SEND_REQUEST_FAILED);
             }
-        }else {
+        } else {
             call.reject("当前微信版本不支持拉起客服会话");
         }
     }
@@ -394,7 +398,7 @@ public class WechatSDKPlugin extends Plugin {
      * @return
      */
     public static String getWxAppId() {
-        return bridge.getConfig().getString("wechatAppId");
+        return pluginConfig.getString("wechatAppId");
     }
 
 
@@ -404,7 +408,7 @@ public class WechatSDKPlugin extends Plugin {
      * @return
      */
     private String getMchId() {
-        return bridge.getConfig().getString("mchid");
+        return pluginConfig.getString("mchid");
     }
 
     /**
