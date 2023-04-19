@@ -1,5 +1,5 @@
 {
-  "name": "@capacitor/wechat-sdk",
+  "name": "@fetaoily/capacitor-wechat-sdk",
   "version": "0.0.1",
   "description": "wechat sdk wrapper with capacitor ,support ios and android",
   "main": "dist/plugin.cjs.js",
@@ -17,10 +17,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chenqingze/capacitor-wechat-sdk.git"
+    "url": "git+https://github.com/fetaoily/capacitor-wechat-sdk.git"
   },
   "bugs": {
-    "url": "https://github.com/chenqingze/capacitor-wechat-sdk/issues"
+    "url": "https://github.com/fetaoily/capacitor-wechat-sdk/issues"
   },
   "keywords": [
     "capacitor",
