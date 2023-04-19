@@ -19,6 +19,7 @@
     "type": "git",
     "url": "git+https://github.com/fetaoily/capacitor-wechat-sdk.git"
   },
+  "homepage": "https://github.com/fetaoily/capacitor-wechat-sdk#readme",
   "bugs": {
     "url": "https://github.com/fetaoily/capacitor-wechat-sdk/issues"
   },
