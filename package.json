@@ -13,7 +13,7 @@
     "ios/Plugin/",
     "CapacitorWechatSdk.podspec"
   ],
-  "author": "ChenQingze",
+  "author": "ChenQingze,Ertao",
   "license": "MIT",
   "repository": {
     "type": "git",
