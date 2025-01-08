@@ -151,7 +151,6 @@ public class WechatSDKPlugin extends Plugin {
         if (callbackId != null) {
             bridge.saveCall(call);
         }
-
         //调用api接口，发送数据到微信
         if (!wxApi.sendReq(req)) {
             call.reject(ERROR_SEND_REQUEST_FAILED);
